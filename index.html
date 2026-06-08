@@ -3,215 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的个人作品集</title>
+    <title>鼠标项目主图详情页预览</title>
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="鼠标项目主图详情页预览">
+    <meta property="og:description" content="Mengzu Pro 鼠标作品集，点击查看旗舰级电竞鼠标主图动效与完整详情页展示。">
+    <meta property="og:image" content="https://xdesigner0204-web.github.io/-/1.jpg">
+    <meta property="og:url" content="https://xdesigner0204-web.github.io/-/">
+
     <style>
-        /* =========================================
-           基础样式与布局
-           ========================================= */
+        /* Apple 风格的基础设定 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
-            /* 【防盗 CSS 1】禁止用户选中文本 */
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro SC", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #000000;
+            color: #f5f5f7;
+            overflow-x: hidden;
+            
+            /* 【防盗保险一】：全网页禁止鼠标选中任何文字或图片内容 */
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
         }
 
-        header {
-            background-color: #2c3e50;
-            color: #fff;
-            padding: 3rem 0;
-            text-align: center;
+        /* 极简导航栏 */
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 5vw;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
+        nav .logo { font-weight: 600; font-size: 18px; color: #f5f5f7; letter-spacing: 0.5px;}
 
-        header h1 {
-            margin: 0;
-            font-size: 2.5rem;
-            letter-spacing: 2px;
-        }
-
-        header p {
-            margin-top: 10px;
-            font-size: 1.1rem;
-            color: #bdc3c7;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
+        /* Apple 经典的满屏滚动视差区 */
+        .apple-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
             padding: 0 20px;
         }
 
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .portfolio-item {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-
-        .portfolio-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .portfolio-item img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            display: block;
-            /* 【防盗 CSS 2】禁用图片的鼠标事件（无法右键点击图片本身或拖拽） */
-            pointer-events: none; 
-        }
-
-        .item-info {
-            padding: 15px;
+        /* 文字动画层 */
+        .text-layer {
             text-align: center;
-        }
-
-        .item-info h3 {
-            margin: 0 0 10px 0;
-            color: #2c3e50;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #2c3e50;
-            color: #fff;
-            margin-top: 40px;
-        }
-
-        /* 水印层示例（覆盖在图片上的透明防盗层） */
-        .img-wrapper {
-            position: relative;
-        }
-        .watermark-overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: transparent;
             z-index: 10;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .text-layer h1 {
+            font-size: 56px;
+            font-weight: 600;
+            letter-spacing: -0.015em;
+            margin-bottom: 15px;
+            background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-layer .green-text { background: linear-gradient(180deg, #86efac 0%, #22c55e 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .text-layer p { font-size: 24px; font-weight: 400; color: #86868b; }
+
+        /* 图片动画层 */
+        .image-layer {
+            margin-top: 40px;
+            width: 100%;
+            height: 60vh;
+            display: flex;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.9) translateY(60px);
+            transition: opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s, transform 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+        }
+        .image-layer img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            
+            /* 【防盗保险二】：彻底禁用手机长按保存、电脑鼠标拖拽图片 */
+            -webkit-touch-callout: none;
+            pointer-events: none;
+        }
+
+        /* 触发后的激活状态 */
+        .apple-section.active .text-layer { opacity: 1; transform: translateY(0); }
+        .apple-section.active .image-layer { opacity: 1; transform: scale(1) translateY(0); }
+
+        /* 最终的长详情页 */
+        .detail-section { width: 100%; background: #000; text-align: center; padding: 100px 0; }
+        .detail-section img { 
+            max-width: 100%; 
+            width: 800px; 
+            display: block; 
+            margin: 0 auto;
+            
+            /* 【防盗保险二】：对长详情页图片同样禁用长按和拖拽 */
+            -webkit-touch-callout: none;
+            pointer-events: none;
         }
 
     </style>
 </head>
-<body oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
+<body>
 
-    <header>
-        <h1>设计师作品集</h1>
-        <p>探索我的视觉艺术与设计项目 (已开启版权保护)</p>
-    </header>
+    <nav>
+        <div class="logo">Mengzu Pro</div>
+    </nav>
 
-    <div class="container">
-        <div class="gallery">
-            <div class="portfolio-item">
-                <div class="img-wrapper">
-                    <div class="watermark-overlay"></div>
-                    <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500&q=80" alt="作品1">
-                </div>
-                <div class="item-info">
-                    <h3>品牌视觉设计</h3>
-                    <p>2026年商业企划案例</p>
-                </div>
-            </div>
-
-            <div class="portfolio-item">
-                <div class="img-wrapper">
-                    <div class="watermark-overlay"></div>
-                    <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?w=500&q=80" alt="作品2">
-                </div>
-                <div class="item-info">
-                    <h3>UI/UX 界面设计</h3>
-                    <p>移动端 APP 重构项目</p>
-                </div>
-            </div>
-
-            <div class="portfolio-item">
-                <div class="img-wrapper">
-                    <div class="watermark-overlay"></div>
-                    <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?w=500&q=80" alt="作品3">
-                </div>
-                <div class="item-info">
-                    <h3>插画艺术</h3>
-                    <p>个人实验性创作</p>
-                </div>
-            </div>
+    <section class="apple-section">
+        <div class="text-layer">
+            <h1 class="green-text">旗舰级电竞性能</h1>
+            <p>最高 26000 DPI，精准跟手</p>
         </div>
-    </div>
+        <div class="image-layer">
+            <img src="1.jpg" alt="性能篇">
+        </div>
+    </section>
 
-    <footer>
-        <p>&copy; 2026 我的作品集. All Rights Reserved. 禁止未经授权的复制与下载。</p>
-    </footer>
+    <section class="apple-section">
+        <div class="text-layer">
+            <h1>轻量化握持。</h1>
+            <p>56g，重塑手感新境界。</p>
+        </div>
+        <div class="image-layer">
+            <img src="4.jpg" alt="轻量化">
+        </div>
+    </section>
+
+    <section class="apple-section">
+        <div class="text-layer">
+            <h1>一亿次环宇微动。</h1>
+            <p>更准，更稳，更快。</p>
+        </div>
+        <div class="image-layer">
+            <img src="5.jpg" alt="微动">
+        </div>
+    </section>
+
+    <section class="apple-section">
+        <div class="text-layer">
+            <h1>800mAh 续航怪兽。</h1>
+            <p>一吸即充，告别焦虑。</p>
+        </div>
+        <div class="image-layer">
+            <img src="3.jpg" alt="电池">
+        </div>
+    </section>
+
+    <section class="apple-section">
+        <div class="text-layer">
+            <h1>EHUB 双端驱动。</h1>
+            <p>简单好用，云端秒同步。</p>
+        </div>
+        <div class="image-layer">
+            <img src="2.jpg" alt="驱动">
+        </div>
+    </section>
+
+    <section class="detail-section">
+        <img src="6.jpg?v=2" alt="详情长图">
+    </section>
 
     <script>
-        // 1. 禁用全局右键菜单
-        document.addEventListener('contextmenu', function(event) {
-            event.preventDefault();
-        });
+        document.addEventListener("DOMContentLoaded", function() {
+            // 滚动触发视差动效
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.3 }); 
 
-        // 2. 禁用键盘上常用的开发者工具及复制快捷键
-        document.addEventListener('keydown', function(event) {
-            // 禁用 F12 (打开开发者工具)
-            if (event.keyCode === 123) {
-                event.preventDefault();
-                return false;
-            }
-            // 禁用 Ctrl+Shift+I 或 Cmd+Opt+I (打开开发者工具)
-            if ((event.ctrlKey && event.shiftKey && event.keyCode === 73) || (event.metaKey && event.altKey && event.keyCode === 73)) {
-                event.preventDefault();
-                return false;
-            }
-            // 禁用 Ctrl+U 或 Cmd+Opt+U (查看网页源代码)
-            if ((event.ctrlKey && event.keyCode === 85) || (event.metaKey && event.altKey && event.keyCode === 85)) {
-                event.preventDefault();
-                return false;
-            }
-            // 禁用 Ctrl+S 或 Cmd+S (保存网页)
-            if ((event.ctrlKey && event.keyCode === 83) || (event.metaKey && event.keyCode === 83)) {
-                event.preventDefault();
-                return false;
-            }
-            // 禁用 Ctrl+C 或 Cmd+C (复制)
-            if ((event.ctrlKey && event.keyCode === 67) || (event.metaKey && event.keyCode === 67)) {
-                event.preventDefault();
-                return false;
-            }
-        });
+            document.querySelectorAll('.apple-section').forEach(section => {
+                observer.observe(section);
+            });
 
-        // 3. 禁用拖拽事件 (防止用户直接把图片拖到桌面)
-        document.addEventListener('dragstart', function(event) {
-            event.preventDefault();
-        });
+            // 【防盗保险三】：网页全面禁用鼠标右键菜单
+            document.oncontextmenu = function() { return false; };
 
-        // 4. 反调试控制台 (如果有人强行打开 F12 控制台，会导致卡死在 debugger 状态)
-        // 警告：开启此功能可能会影响正常用户的体验，此处作为示例提供
-        setInterval(function() {
-            check();
-        }, 1000);
-        var check = function() {
-            function doCheck(a) {
-                if (("" + a / a)["length"] !== 1 || a % 20 === 0) {
-                    (function() {}
-                    ["constructor"]("debugger")())
-                } else {
-                    (function() {}
-                    ["constructor"]("debugger")())
+            // 【防盗保险四】：禁用 F12、Ctrl+Shift+I 等开发者工具，防止懂行的人偷源图链接
+            document.onkeydown = function(e) {
+                if (e.keyCode === 123 || 
+                    (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || 
+                    (e.ctrlKey && e.keyCode === 85)) {
+                    return false;
                 }
-                doCheck(++a)
-            }
-            try {
-                doCheck(0)
-            } catch (err) {}
-        };
+            };
+        });
     </script>
+
 </body>
 </html>
